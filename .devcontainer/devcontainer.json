@@ -1,0 +1,21 @@
+{
+  "name": "VPS-Panel-DevContainer",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  },
+  "postCreateCommand": "pip install uvicorn[standard] python-dotenv python-jose fastapi uvicorn psutil pexpect aiofiles bcrypt python-multipart && npm install -g pnpm",
+  "forwardPorts": [
+    8000,
+    5173
+  ]
+}

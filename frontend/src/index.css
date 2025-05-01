@@ -1,0 +1,6 @@
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: #f0f2f5; /* 可选背景色，和AntD默认风格一致 */
+}
