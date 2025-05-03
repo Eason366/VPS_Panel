@@ -13,61 +13,62 @@ const TerminalPage = () => {
       fontSize: 14,
       cursorBlink: true,
       convertEol: true,
-      theme: {
-        background: "#1e1e1e",
-      },
+      theme: { background: "#1e1e1e" },
+      allowProposedApi: true,  // ✳️ 启用 xterm 插件支持（可选）
     });
-  
+
     const fitAddon = new FitAddon();
     termInstance.loadAddon(fitAddon);
     termInstance.open(terminalRef.current);
     fitAddon.fit();
     term.current = termInstance;
-  
-    const socket = new WebSocket("ws://localhost:8000/ws/terminal");
+
+    const socket = new WebSocket(`ws://${window.location.hostname}:8000/ws/terminal`);
+    socket.binaryType = "arraybuffer";
     socketRef.current = socket;
-  
+
     let errorTimeout = setTimeout(() => {
       termInstance.write("\r\n连接超时，请稍后刷新重试。\r\n");
-    }, 3000); // ⏱️ 等 3 秒再提示“连接失败”
-  
+    }, 3000);
+
     socket.onopen = () => {
-      clearTimeout(errorTimeout); // ✅ 成功连接，取消错误提示
+      clearTimeout(errorTimeout);
       termInstance.write("已连接到服务器终端\r\n");
-  
-      // 接收输入
+
       termInstance.onData((data) => {
-        socket.send(data);
+        const encoded = new TextEncoder().encode(data);
+        socket.send(encoded);
       });
     };
-  
+
     socket.onmessage = (event) => {
-      termInstance.write(event.data);
+      if (event.data instanceof ArrayBuffer) {
+        termInstance.write(new Uint8Array(event.data));
+      } else {
+        termInstance.write(event.data);
+      }
     };
-  
+
     socket.onerror = () => {
-      // 只有超时没取消才写错误
       console.error("WebSocket 出错");
     };
-  
+
     socket.onclose = () => {
-      // 只有超时没取消才写关闭
       console.warn("WebSocket 已关闭");
     };
-  
+
     return () => {
       clearTimeout(errorTimeout);
       socket.close();
       termInstance.dispose();
     };
   }, []);
-  
 
   return (
     <div
       ref={terminalRef}
       style={{
-        height: "calc(100vh - 128px)", // 扣掉导航栏高度
+        height: "calc(100vh - 128px)",
         width: "100%",
         backgroundColor: "#1e1e1e",
       }}

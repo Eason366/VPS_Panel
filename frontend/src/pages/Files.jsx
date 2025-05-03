@@ -194,7 +194,7 @@ const Files = () => {
           onDoubleClick={() => {
             if (item.is_dir) {
               handleEnter(item);
-            } else if (/\.(txt|py|md|json|js|log)$/i.test(item.name)) {
+            } else if (/\.(txt|py|md|json|js|log|gitignore|env|dockerignore|xml|yml|Dockerfile|)$/i.test(item.name)) {
               handleEdit(item);
             }
           }}

@@ -6,6 +6,6 @@ TOKEN_EXPIRE_MINUTES = 30
 PASSWORD_FILE = "password.txt"
 DEFAULT_PASSWORD = "password"
 AVATAR_DIR = "static/avatars"
-ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
+ROOT_DIR = "/usr/root"
 ENV_FILE = ".env"
 ENV_KEY = "HASHED_PASSWORD"

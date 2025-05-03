@@ -1,4 +1,6 @@
 from fastapi import WebSocket, APIRouter
+from .config import ROOT_DIR
+
 import asyncio, os, pty
 
 router = APIRouter()
@@ -6,13 +8,12 @@ router = APIRouter()
 @router.websocket("/ws/terminal")
 async def terminal_websocket(websocket: WebSocket):
     await websocket.accept()
-    # 你希望进入的初始目录
-    HOME_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../"))
-    
+    HOME_PATH = ROOT_DIR
+
     pid, fd = pty.fork()
     if pid == 0:
         os.chdir(HOME_PATH)
-        os.execvp("zsh", ["zsh"])
+        os.execvp("bash", ["bash"])
     else:
         loop = asyncio.get_event_loop()
 
@@ -20,17 +21,17 @@ async def terminal_websocket(websocket: WebSocket):
             while True:
                 try:
                     data = await loop.run_in_executor(None, os.read, fd, 1024)
-                    await websocket.send_text(data.decode(errors="ignore"))
-                except:
+                    await websocket.send_bytes(data)  # ✅ 保留原始控制字符
+                except Exception:
                     break
 
         reader = asyncio.create_task(read_output())
 
         try:
             while True:
-                data = await websocket.receive_text()
-                os.write(fd, data.encode())
-        except:
+                data = await websocket.receive_bytes()  # ✅ 接收原始字符
+                os.write(fd, data)
+        except Exception:
             pass
         finally:
             reader.cancel()

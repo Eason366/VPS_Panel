@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+python-dotenv
+python-jose
+psutil
+pexpect
+aiofiles
+bcrypt
+python-multipart

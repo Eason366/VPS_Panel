@@ -1,0 +1,20 @@
+version: "0.1"
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend.Dockerfile
+    container_name: panel-frontend
+    ports:
+      - "4173:4173"
+
+  backend:
+    build:
+      context: .
+      dockerfile: backend.Dockerfile
+    container_name: panel-backend
+    ports:
+      - "8000:8000"
+    volumes:
+          - /:/usr/root

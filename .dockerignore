@@ -1,0 +1,20 @@
+# 忽略本地 Python 虚拟环境（最关键）
+backend/app/venv
+venv/
+
+# 忽略 __pycache__ 缓存和临时文件
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 忽略 node_modules（前端依赖）
+frontend/node_modules/
+
+# 忽略操作系统/IDE相关
+.DS_Store
+.vscode/
+.idea/
+
+# 忽略 git 信息（可选）
+.git

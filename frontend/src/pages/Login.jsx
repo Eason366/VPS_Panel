@@ -19,6 +19,7 @@ const Login = () => {
 
   const onFinish = async (values) => {
     try {
+      console.log("Login")
       const res = await axios.post("http://localhost:8000/api/login", {
         password: values.password,
       });
