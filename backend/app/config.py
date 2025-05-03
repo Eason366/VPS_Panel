@@ -6,6 +6,6 @@ TOKEN_EXPIRE_MINUTES = 30
 PASSWORD_FILE = "password.txt"
 DEFAULT_PASSWORD = "password"
 AVATAR_DIR = "static/avatars"
-ROOT_DIR = "/usr/root"
+ROOT_DIR = "/usr/root/root"
 ENV_FILE = ".env"
 ENV_KEY = "HASHED_PASSWORD"

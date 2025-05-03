@@ -15,7 +15,7 @@ const ProtectedRoute = ({ children }) => {
     }
 
     axios
-      .get("http://localhost:8000/api/verify", {
+      .get(`http://${window.location.hostname}:8000/api/verify`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -35,7 +35,7 @@ const ProtectedRoute = ({ children }) => {
       .finally(() => setChecking(false));
   }, [navigate]);
 
-  if (checking) return <div>加载中...</div>;  // 或自定义 loading UI
+  if (checking) return <div>加载中..</div>;  // 或自定义 loading UI
 
   return isValid ? children : null;
 };

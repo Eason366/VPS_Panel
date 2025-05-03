@@ -14,14 +14,16 @@ const Dashboard = () => {
 
   const fetchStats = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/api/stats");
+      const res = await axios.get(`http://${window.location.hostname}:8000/api/stats`);
       setData(res.data);
     } catch {
       console.error("无法获取系统状态");
     }
   };
 
-  if (!data) return <div style={{ padding: 24 }}>加载中...</div>;
+  if (!data) {
+    return <div style={{ padding: 24 }}>加载中.</div>
+  };
 
   const ringChart = (title, percent, color) => ({
     title: {

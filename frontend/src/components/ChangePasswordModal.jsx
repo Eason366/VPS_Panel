@@ -7,7 +7,7 @@ const ChangePasswordModal = ({ visible, onClose }) => {
   const handleOk = async () => {
     try {
       const values = await form.validateFields();
-      const res = await axios.post("http://localhost:8000/api/change-password", values);
+      const res = await axios.post(`http://${window.location.hostname}:8000/api/change-password`, values);
       if (res.data.success) {
         message.success("密码修改成功");
         onClose();

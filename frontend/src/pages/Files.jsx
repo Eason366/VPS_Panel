@@ -40,8 +40,8 @@ const Files = () => {
   const fetchFiles = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("http://localhost:8000/api/files", {
-        params: { path: currentPath },
+      const res = await axios.get( `http://${window.location.hostname}:8000/api/files`, {
+          params: { path: currentPath },
       });
       setItems(res.data.items);
     } catch {
@@ -66,7 +66,7 @@ const Files = () => {
 
   const uploadProps = {
     name: "file",
-    action: "http://localhost:8000/api/upload",
+    action: `http://${window.location.hostname}:8000/api/upload`,
     data: { path: currentPath },
     showUploadList: false,
     onChange(info) {
@@ -88,7 +88,7 @@ const Files = () => {
 
   const showFileInfo = async () => {
     try {
-      const res = await axios.get("http://localhost:8000/api/file/info", {
+      const res = await axios.get(`http://${window.location.hostname}:8000/api/info`, {
         params: { path: path.join(currentPath, selectedItem.name) },
       });
       setFileInfo(res.data);
@@ -101,7 +101,7 @@ const Files = () => {
   const handleEdit = async (item) => {
     const filePath = path.join(currentPath, item.name);
     try {
-      const res = await axios.get("http://localhost:8000/api/file/read", {
+      const res = await axios.get(`http://${window.location.hostname}:8000/api/read`, {
         params: { path: filePath },
       });
       setEditPath(filePath);
@@ -114,7 +114,7 @@ const Files = () => {
 
   const handleSave = async () => {
     try {
-      await axios.post("http://localhost:8000/api/file/save", {
+      await axios.post(`http://${window.location.hostname}:8000/api/save`, {
         path: editPath,
         content: editContent,
       });
@@ -134,7 +134,7 @@ const Files = () => {
     } else if (key === "download") {
         const fullPath = path.join(currentPath, selectedItem.name);
         const link = document.createElement("a");
-        link.href = `http://localhost:8000/api/download?path=${encodeURIComponent(fullPath)}`;
+        link.href = `http://${window.location.hostname}:8000/api/download?path=${encodeURIComponent(fullPath)}`;
         link.download = selectedItem.is_dir ? `${selectedItem.name}.zip` : selectedItem.name;
         document.body.appendChild(link);
         link.click();
@@ -145,7 +145,7 @@ const Files = () => {
         content: `确定要删除 ${selectedItem.name} 吗？`,
         onOk: async () => {
           try {
-            await axios.post("http://localhost:8000/api/file/delete", {
+            await axios.post(`http://${window.location.hostname}:8000/api/delete`, {
               path: fullPath,
             });
             message.success("删除成功");
@@ -170,7 +170,7 @@ const Files = () => {
       return;
     }
     try {
-      await axios.post("http://localhost:8000/api/file/create", {
+      await axios.post(`http://${window.location.hostname}:8000/api/create`, {
         path: path.join(currentPath, newName),
         type: creatingType,
       });
